@@ -34,7 +34,13 @@ export class CategoryService extends PrismaClient implements OnModuleInit {
   }
 
   findAll() {
-    return this.category.findMany();
+    return this.category.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+      },
+    });
   }
 
   async findOne(id: string) {
