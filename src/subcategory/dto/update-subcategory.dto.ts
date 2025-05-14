@@ -13,4 +13,8 @@ export class UpdateSubcategoryDto {
   @IsUUID()
   @IsOptional()
   categoryId?: string;
+
+  @IsString()
+  @IsUUID()
+  id: string;
 }
