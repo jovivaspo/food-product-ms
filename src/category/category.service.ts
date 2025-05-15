@@ -8,6 +8,7 @@ import {
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { NATS_SERVICE } from 'src/common/service';
+import { initialCategories } from './data/initial-categories';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -18,10 +19,20 @@ export class CategoryService extends PrismaClient implements OnModuleInit {
   }
 
   private readonly logger = new Logger(CategoryService.name);
-
   async onModuleInit() {
     await this.$connect();
     this.logger.log('Prisma connected');
+    await this.seedInitialCategories();
+  }
+
+  private async seedInitialCategories() {
+    const count = await this.category.count();
+    if (count === 0) {
+      await this.category.createMany({
+        data: initialCategories,
+      });
+      this.logger.log('Initial categories seeded successfully');
+    }
   }
 
   create(createCategoryDto: CreateCategoryDto) {
@@ -30,6 +41,15 @@ export class CategoryService extends PrismaClient implements OnModuleInit {
         name: createCategoryDto.name,
         description: createCategoryDto.description,
       },
+    });
+  }
+
+  async createBulk(categories: CreateCategoryDto[]) {
+    return this.category.createMany({
+      data: categories.map((category) => ({
+        name: category.name,
+        description: category.description,
+      })),
     });
   }
 
@@ -81,5 +101,9 @@ export class CategoryService extends PrismaClient implements OnModuleInit {
         id: category.id,
       },
     });
+  }
+
+  async removeAll() {
+    return this.category.deleteMany();
   }
 }

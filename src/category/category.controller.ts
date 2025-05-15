@@ -13,6 +13,11 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @MessagePattern('createBulkCategory')
+  createBulk(@Payload() categories: CreateCategoryDto[]) {
+    return this.categoryService.createBulk(categories);
+  }
+
   @MessagePattern('findAllCategory')
   findAll() {
     return this.categoryService.findAll();
@@ -31,5 +36,10 @@ export class CategoryController {
   @MessagePattern('removeCategory')
   remove(@Payload() id: string) {
     return this.categoryService.remove(id);
+  }
+
+  @MessagePattern('removeAllCategory')
+  removeAll() {
+    return this.categoryService.removeAll();
   }
 }
