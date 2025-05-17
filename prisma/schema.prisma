@@ -106,7 +106,7 @@ enum RiskType {
 }
 
 model Ingredient {
-  id                 Int                       @id @default(autoincrement())
+  id                 String                    @id @default(uuid())
   name               String                    @db.VarChar(100)
   scientificName     String?                   @db.VarChar(100)
   isBasicFood        Boolean                   @default(false)
@@ -134,7 +134,7 @@ model Ingredient {
 model IngredientRisk {
   id           String     @id @default(uuid())
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId Int
+  ingredientId String
   riskType     RiskType
   level        RiskLevel  @default(NONE)
   createdAt    DateTime   @default(now())
@@ -263,7 +263,7 @@ model Micronutrient {
 
 model IngredientMicronutrient {
   ingredient      Ingredient    @relation(fields: [ingredientId], references: [id])
-  ingredientId    Int
+  ingredientId    String
   micronutrient   Micronutrient @relation(fields: [micronutrientId], references: [id])
   micronutrientId String
   amount          Decimal       @db.Decimal(10, 2)
