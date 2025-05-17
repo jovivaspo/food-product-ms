@@ -19,7 +19,7 @@ export class IngredientController {
   }
 
   @MessagePattern('findOneIngredient')
-  findOne(@Payload() id: number) {
+  findOne(@Payload() id: string) {
     return this.ingredientService.findOne(id);
   }
 
@@ -32,7 +32,7 @@ export class IngredientController {
   }
 
   @MessagePattern('removeIngredient')
-  remove(@Payload() id: number) {
+  remove(@Payload() id: string) {
     return this.ingredientService.remove(id);
   }
 }

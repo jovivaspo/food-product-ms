@@ -71,7 +71,7 @@ export class IngredientService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const ingredient = await this.ingredient.findUnique({
       where: { id },
       include: {
@@ -94,7 +94,7 @@ export class IngredientService extends PrismaClient implements OnModuleInit {
     return ingredient;
   }
 
-  async update(id: number, updateIngredientDto: UpdateIngredientDto) {
+  async update(id: string, updateIngredientDto: UpdateIngredientDto) {
     await this.findOne(id); // Check if exists
 
     const {
@@ -140,7 +140,7 @@ export class IngredientService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.findOne(id); // Check if exists
 
     // Prisma will automatically handle cascading deletes for relations
