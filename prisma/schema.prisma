@@ -144,15 +144,117 @@ model IngredientRisk {
   @@map("ingredient_risks")
 }
 
+enum SolubilityType {
+  FAT_SOLUBLE         @map("Soluble en grasa")
+  WATER_SOLUBLE       @map("Soluble en agua")
+  INORGANIC           @map("Inorgánico / Iónico")
+  BIOCONVERTIBLE      @map("Requiere conversión metabólica")
+  AMPHIPHILIC         @map("Anfipático (hidrofílico y lipofílico)")
+  TRANSPORT_DEPENDENT @map("Requiere transportador/cofactor")
+  N_A                 @map("No aplica")
+}
+
+enum FunctionType {
+  VISION               @map("Salud visual")
+  IMMUNE_SUPPORT       @map("Soporte inmunológico")
+  ENERGY_METABOLISM    @map("Metabolismo energético")
+  BONE_HEALTH          @map("Salud ósea")
+  BLOOD_HEALTH         @map("Salud sanguínea")
+  ANTIOXIDANT          @map("Antioxidante")
+  NEUROTRANSMITTER     @map("Síntesis de neurotransmisores")
+  CELL_GROWTH          @map("Crecimiento y reparación celular")
+  OXYGEN_TRANSPORT     @map("Transporte de oxígeno")
+  ENZYMATIC            @map("Cofactor enzimático")
+  ELECTROLYTE          @map("Balance de electrolitos")
+  HORMONE_REGULATION   @map("Regulación hormonal")
+  GLUCOSE_REGULATION   @map("Regulación de la glucosa")
+  ANTI_INFLAMMATORY    @map("Antiinflamatorio")
+  CARDIOPROTECTIVE     @map("Cardioprotector")
+  NEUROPROTECTIVE      @map("Neuroprotector")
+  ESSENTIAL_FATTY_ACID @map("Ácido graso esencial")
+  COLLAGEN             @map("Formación de colágeno")
+  MUSCLE_GROWTH        @map("Crecimiento muscular")
+  GUT_BARRIER          @map("Integridad de la barrera intestinal")
+  NUTRIENT_ABSORPTION  @map("Absorción de nutrientes")
+  HORMONE_PRECURSOR    @map("Precursor hormonal")
+  SKIN_HEALTH          @map("Salud de la piel")
+  ANTI_CANCER          @map("Anticancerígeno")
+  IMMUNE_MODULATOR     @map("Modulador inmunológico")
+  STRUCTURAL           @map("Función estructural")
+  DETOXIFICATION       @map("Desintoxicación")
+  GUT_MICROBIOME       @map("Modulación de microbioma intestinal")
+  DNA_SYNTHESIS        @map("Síntesis de ADN")
+  LIGHT_FILTER         @map("Filtración de luz")
+}
+
+enum EssentialityType {
+  ESSENTIAL               @map("Esencial")
+  CONDITIONALLY_ESSENTIAL @map("Condicionalmente esencial")
+  NON_ESSENTIAL           @map("No esencial")
+  BENEFICIAL              @map("Beneficioso pero no esencial")
+  UNCLEAR                 @map("Esencialidad no determinada")
+}
+
+enum SourceType {
+  EXOGENOUS             @map("Exógeno (solo fuentes externas)")
+  ENDOGENOUS            @map("Endógeno (sintetizado internamente)")
+  PARTIAL_SYNTHESIS     @map("Síntesis parcial (precursor requerido)")
+  MICROBIOTA            @map("Sintetizado por microbiota intestinal")
+  DUAL_SOURCE           @map("Fuente dual (sintetizado y dietético)")
+  CONDITIONAL_SYNTHESIS @map("Síntesis condicional (limitada por factores)")
+  STORAGE_DEPENDENT     @map("Dependiente de reservas corporales")
+  SYNTHETIC             @map("Sintético (suplementos)")
+}
+
+enum BioactiveType {
+  RETINOID              @map("Retinoide")
+  CAROTENOID            @map("Carotenoide")
+  TOCOPHEROL            @map("Tocoferol")
+  TOCOTRIENOL           @map("Tocotrienol")
+  NAPHTHOQUINONE        @map("Naftoquinona")
+  SECOSTEROID           @map("Secosteroide")
+  FLAVIN                @map("Flavina")
+  NICOTINAMIDE          @map("Nicotinamida")
+  PYRIDOXINE            @map("Piridoxina")
+  COBALAMIN             @map("Cobalamina")
+  ASCORBATE             @map("Ascorbato")
+  THIAMINE              @map("Tiamina")
+  FOLATE                @map("Folato")
+  PANTOTHENATE          @map("Pantotenato")
+  BIOTIN                @map("Biotina")
+  CHOLINE               @map("Colina")
+  ESSENTIAL_MINERAL     @map("Mineral esencial")
+  TRACE_ELEMENT         @map("Oligoelemento")
+  BIOFLAVONOID          @map("Bioflavonoide")
+  POLYPHENOL            @map("Polifenol")
+  ORGANOSULFUR          @map("Organoazufrado")
+  XANTHOPHYLL           @map("Xantofila")
+  QUINONE               @map("Quinona")
+  BETAINE               @map("Betaína")
+  PHOSPHOLIPID          @map("Fosfolípido")
+  AMINO_ACID_DERIVATIVE @map("Derivado de aminoácido")
+  TERPENOID             @map("Terpenoide")
+  ALKALOID              @map("Alcaloide")
+  GLUCOSINOLATE         @map("Glucosinolato")
+  PHYTOSTEROL           @map("Fitoesterol")
+  PROBIOTIC_STRAIN      @map("Cepa probiótica")
+  PREBIOTIC             @map("Prebiótico")
+}
+
 model Micronutrient {
   id                  String                    @id @default(uuid())
   name                String                    @db.VarChar(100)
   description         String?                   @db.Text
   type                TypeMicronutrient
-  properties          String?                   @db.VarChar(100)
+  tolerableLimit      String?
   unit                String                    @db.VarChar(20)
-  dailyRecommendation Decimal?                  @db.Decimal(10, 2)
+  dailyRecommendation String?
   ingredients         IngredientMicronutrient[]
+  solubility          SolubilityType
+  function            FunctionType[]
+  essentiality        EssentialityType
+  source              SourceType
+  bioactiveType       BioactiveType
   createdAt           DateTime                  @default(now())
   updatedAt           DateTime                  @updatedAt
 
