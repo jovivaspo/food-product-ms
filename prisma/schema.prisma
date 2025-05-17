@@ -133,7 +133,7 @@ model Ingredient {
 
 model IngredientRisk {
   id           String     @id @default(uuid())
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
   ingredientId String
   riskType     RiskType
   level        RiskLevel  @default(NONE)
@@ -262,7 +262,7 @@ model Micronutrient {
 }
 
 model IngredientMicronutrient {
-  ingredient      Ingredient    @relation(fields: [ingredientId], references: [id])
+  ingredient      Ingredient    @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
   ingredientId    String
   micronutrient   Micronutrient @relation(fields: [micronutrientId], references: [id])
   micronutrientId String
