@@ -1,9 +1,6 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "TypeMicronutrient" AS ENUM ('Vitamina', 'Mineral', 'Ácido graso', 'Aminoácido', 'Antioxidante', 'Probiótico', 'Fitonutriente');
 
-  - You are about to drop the `Micronutrient` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "AllergenType" AS ENUM ('Ninguno', 'Gluten', 'Lactosa', 'Frutos secos', 'Cacahuetes', 'Soja', 'Huevos', 'Pescado', 'Marisco', 'Apio', 'Mostaza', 'Sésamo', 'Sulfitos', 'Altramuces', 'Moluscos');
 
@@ -19,23 +16,38 @@ CREATE TYPE "RiskLevel" AS ENUM ('Ninguno', 'Bajo', 'Medio', 'Alto');
 -- CreateEnum
 CREATE TYPE "RiskType" AS ENUM ('Carcinogénico', 'Alergénico', 'Inflamatorio', 'Disruptor endocrino', 'Neurotóxico', 'Mutagénico', 'Hepatotóxico', 'Cardiotóxico', 'Obesogénico', 'Alto índice glucémico', 'Adictivo', 'Contaminantes', 'Antinutrientes');
 
--- DropTable
-DROP TABLE "Micronutrient";
+-- CreateTable
+CREATE TABLE "Category" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropEnum
-DROP TYPE "BioactiveType";
+    CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
+);
 
--- DropEnum
-DROP TYPE "EssentialityType";
+-- CreateTable
+CREATE TABLE "Subcategory" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "categoryId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropEnum
-DROP TYPE "FunctionType";
+    CONSTRAINT "Subcategory_pkey" PRIMARY KEY ("id")
+);
 
--- DropEnum
-DROP TYPE "SolubilityType";
+-- CreateTable
+CREATE TABLE "Brand" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropEnum
-DROP TYPE "SourceType";
+    CONSTRAINT "Brand_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "ingredients" (
@@ -102,6 +114,9 @@ CREATE TABLE "ingredient_micronutrients" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ingredient_risks_ingredientId_riskType_key" ON "ingredient_risks"("ingredientId", "riskType");
+
+-- AddForeignKey
+ALTER TABLE "Subcategory" ADD CONSTRAINT "Subcategory_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ingredient_risks" ADD CONSTRAINT "ingredient_risks_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES "ingredients"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
