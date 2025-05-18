@@ -36,73 +36,92 @@ model Brand {
 }
 
 enum TypeMicronutrient {
-  VITAMIN              @map("Vitamina")
-  MINERAL              @map("Mineral")
-  FATTY_ACID           @map("Ácido graso")
-  AMINO_ACID           @map("Aminoácido")
-  ANTIOXIDANT_COMPOUND @map("Antioxidante")
-  PROBIOTIC            @map("Probiótico")
-  PHYTONUTRIENT        @map("Fitonutriente")
+  VITAMIN
+  MINERAL
+  FATTY_ACID
+  AMINO_ACID
+  ANTIOXIDANT_COMPOUND
+  PROBIOTIC
+  PHYTONUTRIENT
 }
 
 enum AllergenType {
-  NONE      @map("Ninguno")
-  GLUTEN    @map("Gluten")
-  LACTOSE   @map("Lactosa")
-  NUTS      @map("Frutos secos")
-  PEANUTS   @map("Cacahuetes")
-  SOY       @map("Soja")
-  EGGS      @map("Huevos")
-  FISH      @map("Pescado")
-  SHELLFISH @map("Marisco")
-  CELERY    @map("Apio")
-  MUSTARD   @map("Mostaza")
-  SESAME    @map("Sésamo")
-  SULFITES  @map("Sulfitos")
-  LUPIN     @map("Altramuces")
-  MOLLUSCS  @map("Moluscos")
+  NONE
+  GLUTEN
+  LACTOSE
+  NUTS
+  PEANUTS
+  SOY
+  EGGS
+  FISH
+  SHELLFISH
+  CELERY
+  MUSTARD
+  SESAME
+  SULFITES
+  LUPIN
+  MOLLUSCS
 }
 
 enum OriginType {
-  ANIMAL    @map("Animal")
-  VEGETAL   @map("Vegetal")
-  SYNTHETIC @map("Sintético")
-  MINERAL   @map("Mineral")
-  MICROBIAL @map("Microbial")
+  ANIMAL
+  VEGETAL
+  SYNTHETIC
+  MINERAL
+  MICROBIAL
 }
 
 enum AdditiveType {
-  NO              @map("No es aditivo")
-  SWEETENER       @map("Edulcorante")
-  PRESERVATIVE    @map("Conservante")
-  COLORANT        @map("Colorante")
-  EMULSIFIER      @map("Emulsionante")
-  FLAVOR_ENHANCER @map("Potenciador del sabor")
-  STABILIZER      @map("Estabilizador")
-  THICKENER       @map("Espesante")
+  NONE
+  SWEETENER
+  PRESERVATIVE
+  COLORANT
+  EMULSIFIER
+  FLAVOR_ENHANCER
+  STABILIZER
+  THICKENER
+  ACIDULANT
+  BULKING_AGENT
+  COATING_AGENT
+  ANTI_CAKING_AGENT
+  ANTI_FOAMING_AGENT
+  ANTIOXIDANT
+  CLARIFYING_AGENT
+  COAGULANT
+  COLOR_FIXATIVE
+  GASES
+  RAISING_AGENT
+  GELLING_AGENT
+  HUMECTANT
+  ACIDITY_REGULATOR
+  FLAVORING
+  MELTING_SALT
+  SEQUESTRANT
+  FLOUR_TREATMENT_AGENT
+  VARIOUS
 }
 
 enum RiskLevel {
-  NONE   @map("Ninguno")
-  LOW    @map("Bajo")
-  MEDIUM @map("Medio")
-  HIGH   @map("Alto")
+  NONE
+  LOW
+  MEDIUM
+  HIGH
 }
 
 enum RiskType {
-  CARCINOGENIC        @map("Carcinogénico")
-  ALLERGENIC          @map("Alergénico")
-  INFLAMMATORY        @map("Inflamatorio")
-  ENDOCRINE_DISRUPTOR @map("Disruptor endocrino")
-  NEUROTOXIC          @map("Neurotóxico")
-  MUTAGENIC           @map("Mutagénico")
-  HEPATOTOXIC         @map("Hepatotóxico")
-  CARDIOTOXIC         @map("Cardiotóxico")
-  OBESOGENIC          @map("Obesogénico")
-  HIGH_GI             @map("Alto índice glucémico")
-  ADDICTIVE           @map("Adictivo")
-  CONTAMINANTS        @map("Contaminantes")
-  ANTINUTRIENTS       @map("Antinutrientes")
+  CARCINOGENIC
+  ALLERGENIC
+  INFLAMMATORY
+  ENDOCRINE_DISRUPTOR
+  NEUROTOXIC
+  MUTAGENIC
+  HEPATOTOXIC
+  CARDIOTOXIC
+  OBESOGENIC
+  HIGH_GI
+  ADDICTIVE
+  CONTAMINANTS
+  ANTINUTRIENTS
 }
 
 model Ingredient {
@@ -113,7 +132,7 @@ model Ingredient {
   description        String?                   @db.Text
   allergenType       AllergenType              @default(NONE)
   origin             OriginType
-  additiveType       AdditiveType              @default(NO)
+  additiveType       AdditiveType              @default(NONE)
   servingSize        Decimal?                  @db.Decimal(10, 2)
   servingMeasurement String?                   @db.VarChar(20)
   calories           Decimal                   @db.Decimal(10, 2)
@@ -145,100 +164,100 @@ model IngredientRisk {
 }
 
 enum SolubilityType {
-  FAT_SOLUBLE         @map("Soluble en grasa")
-  WATER_SOLUBLE       @map("Soluble en agua")
-  INORGANIC           @map("Inorgánico / Iónico")
-  BIOCONVERTIBLE      @map("Requiere conversión metabólica")
-  AMPHIPHILIC         @map("Anfipático (hidrofílico y lipofílico)")
-  TRANSPORT_DEPENDENT @map("Requiere transportador/cofactor")
-  N_A                 @map("No aplica")
+  FAT_SOLUBLE
+  WATER_SOLUBLE
+  INORGANIC
+  BIOCONVERTIBLE
+  AMPHIPHILIC
+  TRANSPORT_DEPENDENT
+  N_A
 }
 
 enum FunctionType {
-  VISION               @map("Salud visual")
-  IMMUNE_SUPPORT       @map("Soporte inmunológico")
-  ENERGY_METABOLISM    @map("Metabolismo energético")
-  BONE_HEALTH          @map("Salud ósea")
-  BLOOD_HEALTH         @map("Salud sanguínea")
-  ANTIOXIDANT          @map("Antioxidante")
-  NEUROTRANSMITTER     @map("Síntesis de neurotransmisores")
-  CELL_GROWTH          @map("Crecimiento y reparación celular")
-  OXYGEN_TRANSPORT     @map("Transporte de oxígeno")
-  ENZYMATIC            @map("Cofactor enzimático")
-  ELECTROLYTE          @map("Balance de electrolitos")
-  HORMONE_REGULATION   @map("Regulación hormonal")
-  GLUCOSE_REGULATION   @map("Regulación de la glucosa")
-  ANTI_INFLAMMATORY    @map("Antiinflamatorio")
-  CARDIOPROTECTIVE     @map("Cardioprotector")
-  NEUROPROTECTIVE      @map("Neuroprotector")
-  ESSENTIAL_FATTY_ACID @map("Ácido graso esencial")
-  COLLAGEN             @map("Formación de colágeno")
-  MUSCLE_GROWTH        @map("Crecimiento muscular")
-  GUT_BARRIER          @map("Integridad de la barrera intestinal")
-  NUTRIENT_ABSORPTION  @map("Absorción de nutrientes")
-  HORMONE_PRECURSOR    @map("Precursor hormonal")
-  SKIN_HEALTH          @map("Salud de la piel")
-  ANTI_CANCER          @map("Anticancerígeno")
-  IMMUNE_MODULATOR     @map("Modulador inmunológico")
-  STRUCTURAL           @map("Función estructural")
-  DETOXIFICATION       @map("Desintoxicación")
-  GUT_MICROBIOME       @map("Modulación de microbioma intestinal")
-  DNA_SYNTHESIS        @map("Síntesis de ADN")
-  LIGHT_FILTER         @map("Filtración de luz")
+  VISION
+  IMMUNE_SUPPORT
+  ENERGY_METABOLISM
+  BONE_HEALTH
+  BLOOD_HEALTH
+  ANTIOXIDANT
+  NEUROTRANSMITTER
+  CELL_GROWTH
+  OXYGEN_TRANSPORT
+  ENZYMATIC
+  ELECTROLYTE
+  HORMONE_REGULATION
+  GLUCOSE_REGULATION
+  ANTI_INFLAMMATORY
+  CARDIOPROTECTIVE
+  NEUROPROTECTIVE
+  ESSENTIAL_FATTY_ACID
+  COLLAGEN
+  MUSCLE_GROWTH
+  GUT_BARRIER
+  NUTRIENT_ABSORPTION
+  HORMONE_PRECURSOR
+  SKIN_HEALTH
+  ANTI_CANCER
+  IMMUNE_MODULATOR
+  STRUCTURAL
+  DETOXIFICATION
+  GUT_MICROBIOME
+  DNA_SYNTHESIS
+  LIGHT_FILTER
 }
 
 enum EssentialityType {
-  ESSENTIAL               @map("Esencial")
-  CONDITIONALLY_ESSENTIAL @map("Condicionalmente esencial")
-  NON_ESSENTIAL           @map("No esencial")
-  BENEFICIAL              @map("Beneficioso pero no esencial")
-  UNCLEAR                 @map("Esencialidad no determinada")
+  ESSENTIAL
+  CONDITIONALLY_ESSENTIAL
+  NON_ESSENTIAL
+  BENEFICIAL
+  UNCLEAR
 }
 
 enum SourceType {
-  EXOGENOUS             @map("Exógeno (solo fuentes externas)")
-  ENDOGENOUS            @map("Endógeno (sintetizado internamente)")
-  PARTIAL_SYNTHESIS     @map("Síntesis parcial (precursor requerido)")
-  MICROBIOTA            @map("Sintetizado por microbiota intestinal")
-  DUAL_SOURCE           @map("Fuente dual (sintetizado y dietético)")
-  CONDITIONAL_SYNTHESIS @map("Síntesis condicional (limitada por factores)")
-  STORAGE_DEPENDENT     @map("Dependiente de reservas corporales")
-  SYNTHETIC             @map("Sintético (suplementos)")
+  EXOGENOUS
+  ENDOGENOUS
+  PARTIAL_SYNTHESIS
+  MICROBIOTA
+  DUAL_SOURCE
+  CONDITIONAL_SYNTHESIS
+  STORAGE_DEPENDENT
+  SYNTHETIC
 }
 
 enum BioactiveType {
-  RETINOID              @map("Retinoide")
-  CAROTENOID            @map("Carotenoide")
-  TOCOPHEROL            @map("Tocoferol")
-  TOCOTRIENOL           @map("Tocotrienol")
-  NAPHTHOQUINONE        @map("Naftoquinona")
-  SECOSTEROID           @map("Secosteroide")
-  FLAVIN                @map("Flavina")
-  NICOTINAMIDE          @map("Nicotinamida")
-  PYRIDOXINE            @map("Piridoxina")
-  COBALAMIN             @map("Cobalamina")
-  ASCORBATE             @map("Ascorbato")
-  THIAMINE              @map("Tiamina")
-  FOLATE                @map("Folato")
-  PANTOTHENATE          @map("Pantotenato")
-  BIOTIN                @map("Biotina")
-  CHOLINE               @map("Colina")
-  ESSENTIAL_MINERAL     @map("Mineral esencial")
-  TRACE_ELEMENT         @map("Oligoelemento")
-  BIOFLAVONOID          @map("Bioflavonoide")
-  POLYPHENOL            @map("Polifenol")
-  ORGANOSULFUR          @map("Organoazufrado")
-  XANTHOPHYLL           @map("Xantofila")
-  QUINONE               @map("Quinona")
-  BETAINE               @map("Betaína")
-  PHOSPHOLIPID          @map("Fosfolípido")
-  AMINO_ACID_DERIVATIVE @map("Derivado de aminoácido")
-  TERPENOID             @map("Terpenoide")
-  ALKALOID              @map("Alcaloide")
-  GLUCOSINOLATE         @map("Glucosinolato")
-  PHYTOSTEROL           @map("Fitoesterol")
-  PROBIOTIC_STRAIN      @map("Cepa probiótica")
-  PREBIOTIC             @map("Prebiótico")
+  RETINOID
+  CAROTENOID
+  TOCOPHEROL
+  TOCOTRIENOL
+  NAPHTHOQUINONE
+  SECOSTEROID
+  FLAVIN
+  NICOTINAMIDE
+  PYRIDOXINE
+  COBALAMIN
+  ASCORBATE
+  THIAMINE
+  FOLATE
+  PANTOTHENATE
+  BIOTIN
+  CHOLINE
+  ESSENTIAL_MINERAL
+  TRACE_ELEMENT
+  BIOFLAVONOID
+  POLYPHENOL
+  ORGANOSULFUR
+  XANTHOPHYLL
+  QUINONE
+  BETAINE
+  PHOSPHOLIPID
+  AMINO_ACID_DERIVATIVE
+  TERPENOID
+  ALKALOID
+  GLUCOSINOLATE
+  PHYTOSTEROL
+  PROBIOTIC_STRAIN
+  PREBIOTIC
 }
 
 model Micronutrient {
