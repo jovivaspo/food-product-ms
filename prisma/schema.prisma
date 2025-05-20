@@ -10,22 +10,13 @@ generator client {
 }
 
 model Category {
-  id            String        @id @default(uuid())
-  name          String
-  description   String?
-  subcategories Subcategory[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-}
-
-model Subcategory {
   id          String   @id @default(uuid())
   name        String
   description String?
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("categories")
 }
 
 model Brand {
@@ -33,6 +24,8 @@ model Brand {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("brands")
 }
 
 enum TypeMicronutrient {
@@ -72,7 +65,6 @@ enum OriginType {
 }
 
 enum AdditiveType {
-  NONE
   SWEETENER
   PRESERVATIVE
   COLORANT
@@ -101,14 +93,7 @@ enum AdditiveType {
   VARIOUS
 }
 
-enum RiskLevel {
-  NONE
-  LOW
-  MEDIUM
-  HIGH
-}
-
-enum RiskType {
+enum HealthConcernType {
   CARCINOGENIC
   ALLERGENIC
   INFLAMMATORY
@@ -120,19 +105,45 @@ enum RiskType {
   OBESOGENIC
   HIGH_GI
   ADDICTIVE
-  CONTAMINANTS
-  ANTINUTRIENTS
+  CONTAMINAT
+  ANTINUTRIENT
+  RESPIRATORY_PROBLEMS
+  DIGESTIVE_PROBLEMS
+  BEHAVIORAL_DISORDERS
 }
 
-model Ingredient {
+enum AdditiveRating {
+  AVOID
+  CAUTION
+  SAFE
+  SAFE_IN_MODERATION
+  CUT_BACK
+}
+
+model Additive {
+  id             String              @id @default(uuid())
+  name           String              @db.VarChar(100)
+  scientificName String?             @db.VarChar(100)
+  description    String?             @db.Text
+  origin         OriginType
+  additiveType   AdditiveType
+  healthConcerns HealthConcernType[]
+  rating         AdditiveRating
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([name], name: "idx_additives_name")
+  @@index([additiveType], name: "idx_additives_type")
+  @@index([healthConcerns], name: "idx_additives_health_concerns")
+  @@index([rating], name: "idx_additives_rating")
+  @@map("additives")
+}
+
+model StapleFood {
   id                 String                    @id @default(uuid())
   name               String                    @db.VarChar(100)
-  scientificName     String?                   @db.VarChar(100)
-  isBasicFood        Boolean                   @default(false)
-  description        String?                   @db.Text
   allergenType       AllergenType              @default(NONE)
   origin             OriginType
-  additiveType       AdditiveType              @default(NONE)
   servingSize        Decimal?                  @db.Decimal(10, 2)
   servingMeasurement String?                   @db.VarChar(20)
   calories           Decimal                   @db.Decimal(10, 2)
@@ -142,25 +153,14 @@ model Ingredient {
   fats               Decimal?                  @db.Decimal(10, 2)
   saturatedFats      Decimal?                  @db.Decimal(10, 2)
   fiber              Decimal?                  @db.Decimal(10, 2)
-  risks              IngredientRisk[]
-  micronutrients     IngredientMicronutrient[]
+  micronutrients     StapleFoodMicronutrient[]
   createdAt          DateTime                  @default(now())
   updatedAt          DateTime                  @updatedAt
 
-  @@map("ingredients")
-}
-
-model IngredientRisk {
-  id           String     @id @default(uuid())
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
-  ingredientId String
-  riskType     RiskType
-  level        RiskLevel  @default(NONE)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-
-  @@unique([ingredientId, riskType])
-  @@map("ingredient_risks")
+  @@index([name], name: "idx_staple_foods_name")
+  @@index([origin], name: "idx_staple_foods_origin")
+  @@index([allergenType], name: "idx_staple_foods_allergen_type")
+  @@map("staple_foods")
 }
 
 enum SolubilityType {
@@ -268,7 +268,7 @@ model Micronutrient {
   tolerableLimit      String?
   unit                String                    @db.VarChar(20)
   dailyRecommendation String?
-  ingredients         IngredientMicronutrient[]
+  ingredients         StapleFoodMicronutrient[]
   solubility          SolubilityType
   function            FunctionType[]
   essentiality        EssentialityType
@@ -280,15 +280,15 @@ model Micronutrient {
   @@map("micronutrients")
 }
 
-model IngredientMicronutrient {
-  ingredient      Ingredient    @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
-  ingredientId    String
+model StapleFoodMicronutrient {
+  stapleFood      StapleFood    @relation(fields: [stapleFoodId], references: [id], onDelete: Cascade)
+  stapleFoodId    String
   micronutrient   Micronutrient @relation(fields: [micronutrientId], references: [id])
   micronutrientId String
   amount          Decimal       @db.Decimal(10, 2)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
-  @@id([ingredientId, micronutrientId])
-  @@map("ingredient_micronutrients")
+  @@id([stapleFoodId, micronutrientId])
+  @@map("staple_foods_micronutrients")
 }
