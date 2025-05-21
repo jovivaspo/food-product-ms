@@ -15,4 +15,14 @@ export class AdditiveController {
   findOne(@Payload() id: string) {
     return this.additiveService.findOne(id);
   }
+
+  @MessagePattern('createAdditive')
+  create(@Payload() createAdditiveDto: any) {
+    return this.additiveService.create(createAdditiveDto);
+  }
+
+  @MessagePattern('removeAdditive')
+  remove(@Payload() id: string) {
+    return this.additiveService.remove(id);
+  }
 }

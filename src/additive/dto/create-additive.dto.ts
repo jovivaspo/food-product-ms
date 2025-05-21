@@ -21,8 +21,12 @@ export class CreateAdditiveDto {
   @IsEnum(OriginType)
   origin: OriginType;
 
-  @IsEnum(AdditiveType)
-  additiveType: AdditiveType;
+  @IsArray()
+  @IsEnum(AdditiveType, {
+    each: true,
+    message: 'Each additive type must be a valid AdditiveType enum value',
+  })
+  additiveType: AdditiveType[];
 
   @IsArray()
   @IsEnum(HealthConcernType, {

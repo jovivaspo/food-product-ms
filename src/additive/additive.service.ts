@@ -3,6 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { NATS_SERVICE } from 'src/config';
 import { innitialAdditives } from './data/innitial-additives';
+import { CreateAdditiveDto } from './dto/create-additive.dto';
 
 @Injectable()
 export class AdditiveService extends PrismaClient implements OnModuleInit {
@@ -26,6 +27,12 @@ export class AdditiveService extends PrismaClient implements OnModuleInit {
       });
       this.logger.log('Initial additives seeded successfully');
     }
+  }
+
+  async create(createAdditiveDto: CreateAdditiveDto) {
+    return this.additive.create({
+      data: createAdditiveDto,
+    });
   }
 
   findAll() {
@@ -55,6 +62,16 @@ export class AdditiveService extends PrismaClient implements OnModuleInit {
     }
 
     return additive;
+  }
+
+  async remove(id: string) {
+    const additive = await this.findOne(id);
+
+    return this.additive.delete({
+      where: {
+        id: additive.id,
+      },
+    });
   }
 
   async removeAll() {

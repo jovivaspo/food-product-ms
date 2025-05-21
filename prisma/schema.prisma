@@ -126,7 +126,7 @@ model Additive {
   scientificName String?             @db.VarChar(100)
   description    String?             @db.Text
   origin         OriginType
-  additiveType   AdditiveType
+  additiveType   AdditiveType[]
   healthConcerns HealthConcernType[]
   rating         AdditiveRating
   createdAt      DateTime            @default(now())
