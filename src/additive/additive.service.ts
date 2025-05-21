@@ -1,5 +1,11 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import {
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaClient } from '@prisma/client';
 import { NATS_SERVICE } from 'src/config';
 import { innitialAdditives } from './data/innitial-additives';
@@ -58,7 +64,10 @@ export class AdditiveService extends PrismaClient implements OnModuleInit {
     });
 
     if (!additive) {
-      throw new Error(`Additive with id ${id} not found`);
+      throw new RpcException({
+        status: HttpStatus.NOT_FOUND,
+        message: `Additive with id ${id} not found`,
+      });
     }
 
     return additive;
