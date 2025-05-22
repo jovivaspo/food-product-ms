@@ -142,7 +142,7 @@ model Additive {
 model StapleFood {
   id                 String                    @id @default(uuid())
   name               String                    @db.VarChar(100)
-  allergenType       AllergenType              @default(NONE)
+  allergenType       AllergenType[]            @default([])
   origin             OriginType
   servingSize        Decimal?                  @db.Decimal(10, 2)
   servingMeasurement String?                   @db.VarChar(20)
