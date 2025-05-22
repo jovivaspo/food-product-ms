@@ -50,6 +50,10 @@ export class CreateStapleFoodDto {
 
   @IsNumber()
   @IsPositive()
+  fiber: number = 0;
+
+  @IsNumber()
+  @IsPositive()
   saturatedFats: number = 0;
 
   @IsNumber()
